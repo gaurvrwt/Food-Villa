@@ -1,4 +1,4 @@
-import React,{lazy,Suspense} from "react";
+import React,{lazy,Suspense,useContext,useState} from "react";
 import ReactDOM from "react-dom/client";
 import Header from "./Components/Header";
 import Body from "./Components/Body";
@@ -9,6 +9,8 @@ import Error from "./Components/Error";
 import Contact from "./Components/Contact";
 // import Cart from "./Components/Cart";
 import RestaurantMenu from "./Components/RestrauntMenu";
+import Shimmer from "./Components/Shimmer";
+import UserContext from "./utils/UserContext";
 
 // const heading  = React.createElement("h1",{key:"first"},'My Name is Gaurava Singh Rawat');
 // const heading2 = React.createElement("h4",{key:"first2"},'my name is Gaurav Singh Rawat');
@@ -17,11 +19,21 @@ import RestaurantMenu from "./Components/RestrauntMenu";
 const Cart = lazy(()=> import('./Components/Cart'))
 
 const AppLayout = () => {
+
+  const {user} = useContext(UserContext)
+
+ const [newUser,setNewUser] = useState({
+  name:'Dummy Name',
+  email:'dummyemail@gmail.com'
+ }) 
+
   return (
     <>
+ <UserContext.Provider value={{user:newUser,setNewUser:setNewUser}}>
       <Header />
       <Outlet />
       <Footer />
+      </UserContext.Provider>
     </>
   );
 };
@@ -47,7 +59,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: "/cart",
-        element: <Suspense> <Cart /> </Suspense>,
+        element: <Suspense fallback={<Shimmer />}> <Cart /> </Suspense>,
         errorElement: <Error />,
       },
       {

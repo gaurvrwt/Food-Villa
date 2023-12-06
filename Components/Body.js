@@ -1,16 +1,18 @@
 import RestaurantCard from "./RestaurantList";
 import { restaurantData } from "../config";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import { filterData } from "../utils/helper";
 import useRestaurantList from "../utils/useRestaurantList";
 import useOnline from "../utils/useOnline";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [searchText, setSearchText] = useState("");
   const [filteredRestaurants, allRestaurantList] = useRestaurantList();
   const isOnline = useOnline();
+  const {user,setNewUser} = useContext(UserContext)
 
   if(!isOnline){
     return(
@@ -28,6 +30,7 @@ const Body = () => {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
+        <input type="text"  value={user.name} onChange={(e)=>setNewUser({name:e.target.value,email:"random mail"})}/>
         <button
           onClick={() => {
             const data = filterData(searchText, allRestaurantList);

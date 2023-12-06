@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import { Link } from "react-router-dom";
 import useOnline from "../utils/useOnline";
+import UserContext from "../utils/UserContext";
 
 const Logo = () => (
     <a key="firsttitle" href="/">
@@ -17,6 +18,7 @@ const Header = () => {
 
   const [isLoggedIn,setIsLoggedIn] = useState(false);
   const isOnline = useOnline();
+  const {user} = useContext(UserContext)
 
 
     return (
@@ -31,6 +33,8 @@ const Header = () => {
              <li><Link to="/contact">Contact</Link>  </li>
             <li> <Link to="/cart">Cart</Link>  </li>
             <li> {isOnline ? 'Online' : 'Offline'} </li>
+            <li>{user.name}</li>
+            <li>{user.email}</li>
           </ul>
         </div>
         {
