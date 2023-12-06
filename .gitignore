@@ -1,2 +1,6 @@
+# Packages to Avoid
 node_modules 
 dist/
+
+# Files to Avoid
+*.mdb
